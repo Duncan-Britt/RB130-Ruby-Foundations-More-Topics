@@ -116,6 +116,16 @@ class TodoList
     @todos.each do |todo|
       yield(todo)
     end
+    self
+  end
+
+  def select
+    newdos = @todos.select do |todo|
+      yield(todo)
+    end
+    result = TodoList.new(title)
+    newdos.each { |e| result << e }
+    result
   end
 end
 
@@ -128,6 +138,8 @@ list.add(todo1)
 list.add(todo2)
 list.add(todo3)
 
-list.each do |todo|
-  puts todo                   # calls Todo#to_s
-end
+todo1.done!
+
+results = list.select { |todo| todo.done? }    # you need to implement this method
+
+puts results.inspect
